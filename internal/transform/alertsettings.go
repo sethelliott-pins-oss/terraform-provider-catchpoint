@@ -187,6 +187,10 @@ func jsonToTerraformTrigger(trigger models.TriggerJSON) (triggerModel cpresource
 			return
 		}
 		setStringValueIfNotNil(trigger.FilterValue, &triggerModel.Level.FilterValue)
+		// The API omits an empty filterValue (e.g. filter_type "index" with ""); match the schema default.
+		if triggerModel.Level.FilterValue.IsNull() {
+			triggerModel.Level.FilterValue = types.StringValue(cptypes.EmptyString)
+		}
 	}
 
 	return

@@ -184,12 +184,16 @@ func buildAlertSettingsBlock(ctx context.Context, alertTypeValidator, alertSubTy
 								Computed:    true,
 								Description: "Sets the alert statistical type, " + statisticalTypeValidator.Description(ctx),
 								Validators:  []validator.String{statisticalTypeValidator},
+								// Only used by 'trailing value' and 'trendshift' triggers; the API omits it otherwise.
+								Default: stringdefault.StaticString(cptypes.EmptyString),
 							},
 							fields.HistoricalInterval: schema.StringAttribute{
 								Optional:    true,
 								Computed:    true,
 								Description: "Sets the alert historical interval, " + historicalIntervalValidator.Description(ctx),
 								Validators:  []validator.String{historicalIntervalValidator},
+								// Only used by 'trailing value' and 'trendshift' triggers; the API omits it otherwise.
+								Default: stringdefault.StaticString(cptypes.EmptyString),
 							},
 							fields.WarningTrigger: schema.Float64Attribute{
 								Optional:    true,
@@ -301,6 +305,7 @@ func buildAlertSettingsBlock(ctx context.Context, alertTypeValidator, alertSubTy
 										Optional:    true,
 										Computed:    true,
 										Description: "The value for the filter",
+										Default:     stringdefault.StaticString(cptypes.EmptyString),
 									},
 								},
 							},
